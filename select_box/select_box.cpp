@@ -80,6 +80,8 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series)
 			}
 			i++;
 		}
+		//to return two values used string
+		//a string like "firstNum secondNum"
 		stringstream text;
 		text << pack[start].bestBox.series << " " << pack[start].emptySpace;
 		return text.str() ;
@@ -115,14 +117,16 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series)
 		firstSeries = stringToNum(first, 1);
 		firstEmptySpace = stringToNum(first, 2);
 	}
+	//when empty spaces are equal 
 	else
-	{
+	{ //get empty space for other series to check properly
 		first = selectBox(pack, boxes, start, pivot, secondSeries);
 		second = selectBox(pack, boxes, pivot + 1, finish, firstSeries);
 		firstSeries = stringToNum(first, 1);
 		firstEmptySpace = stringToNum(first, 2);
 		secondSeries = stringToNum(second, 1);
 		secondEmptySpace = stringToNum(second, 2);
+		//check the minimum
 		if (firstEmptySpace > secondEmptySpace)
 		{
 			second = selectBox(pack, boxes, pivot + 1, finish, firstSeries);
@@ -136,11 +140,15 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series)
 			firstEmptySpace = stringToNum(first, 2);
 		}
 	}
+	//to return two values used string
+	//a string like "firstNum secondNum"
 	stringstream text;
 	text << firstSeries << " " << firstEmptySpace + secondEmptySpace;
 	return text.str();
 }
 
+//turn strings like "number number" to in 
+//has 2 values for choice 1 for first number and 2 for the second one
 int stringToNum(string inputText ,int choice) 
 {
 	int number;
@@ -148,8 +156,10 @@ int stringToNum(string inputText ,int choice)
 	stringstream text(inputText);
 	text >> temp;
 	number = stoi(temp);
+	//to get the first number
 	if (choice == 1)
 		return number;
+	//to get the second number
 	text >> temp;
 	number = stoi(temp);
 	return number;
