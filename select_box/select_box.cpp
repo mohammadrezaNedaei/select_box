@@ -23,8 +23,8 @@ void readFile(package[], box[]);
 
 int main()
 {
-	package pack[10];
-	box boxes[10];
+	package pack[100];
+	box boxes[100];
 	readFile(pack, boxes);
 	int a = stringToNum(selectBox(pack, boxes, 0, 5), 2);
 	cout << a << endl; 
