@@ -22,8 +22,8 @@ int stringToNum(string, int);
 int main()
 {
 	package pack[10];
-	pack[0].requredSpace = 3;
-	pack[1].requredSpace = 5;
+	pack[0].requredSpace = 5;
+	pack[1].requredSpace = 3;
 	pack[2].requredSpace = 8;
 	pack[3].requredSpace = 10;
 	pack[4].requredSpace = 11;
@@ -43,7 +43,14 @@ int main()
 	boxes[5].space = 5;
 	boxes[6].series = 3;
 	boxes[6].space = 14;
-	selectBox(pack, boxes, 0, 5);
+	int a = stringToNum(selectBox(pack, boxes, 0, 5), 2);
+	cout << a << endl; 
+	int i = 0;
+	while (pack[i].requredSpace > 0)
+	{
+		cout << pack[i].requredSpace << " " << pack[i].bestBox.space << endl;
+		i++;
+	}
 }
 
 string selectBox(package pack[], box boxes[], int start, int finish, int series)
@@ -87,7 +94,7 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series)
 	firstSeries = stringToNum(first, 1);
 	firstEmptySpace = stringToNum(first, 2);
 	secondSeries = stringToNum(second, 1);
-	secondEmptySpace = stringToNum(first, 2);
+	secondEmptySpace = stringToNum(second, 2);
 	//for when series are equal
 	if (firstSeries == secondSeries)
 	{
@@ -107,6 +114,27 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series)
 		first = selectBox(pack, boxes, start, pivot, secondSeries);
 		firstSeries = stringToNum(first, 1);
 		firstEmptySpace = stringToNum(first, 2);
+	}
+	else
+	{
+		first = selectBox(pack, boxes, start, pivot, secondSeries);
+		second = selectBox(pack, boxes, pivot + 1, finish, firstSeries);
+		firstSeries = stringToNum(first, 1);
+		firstEmptySpace = stringToNum(first, 2);
+		secondSeries = stringToNum(second, 1);
+		secondEmptySpace = stringToNum(second, 2);
+		if (firstEmptySpace > secondEmptySpace)
+		{
+			second = selectBox(pack, boxes, pivot + 1, finish, firstSeries);
+			secondSeries = stringToNum(second, 1);
+			secondEmptySpace = stringToNum(second, 2);
+		}
+		else if (firstEmptySpace < secondEmptySpace)
+		{
+			first = selectBox(pack, boxes, start, pivot, secondSeries);
+			firstSeries = stringToNum(first, 1);
+			firstEmptySpace = stringToNum(first, 2);
+		}
 	}
 	stringstream text;
 	text << firstSeries << " " << firstEmptySpace + secondEmptySpace;
