@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ struct package
 	int emptySpace;
 	box bestBox;
 };
-string selectBox(package[], box[], int, int, int);
+string selectBox(package[], box[], int, int, int = 0);
 void sort(package[]);
 int stringToNum(string, int);
 
@@ -42,15 +43,16 @@ int main()
 	boxes[5].space = 5;
 	boxes[6].series = 3;
 	boxes[6].space = 14;
+	selectBox(pack, boxes, 0, 5);
 }
 
-string selectBox(package pack[], box boxes[], int start, int finish, int series = 0)
+string selectBox(package pack[], box boxes[], int start, int finish, int series)
 {
 	//base
 	if (start == finish)
 	{
 		int q, i = 1, empS = 100000; //counter, endOfAnyBoxproducer, emptySpace
-		while (boxes[i].space)
+		while (boxes[i].space > 0)
 		{
 			if (series != 0)
 				if (series != boxes[i].series)
@@ -71,7 +73,9 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series 
 			}
 			i++;
 		}
-		return pack[start].bestBox.series + " " + pack[start].emptySpace;
+		stringstream text;
+		text << pack[start].bestBox.series << " " << pack[start].emptySpace;
+		return text.str() ;
 	}
 	int pivot = (start + finish) / 2;
 	int firstSeries, firstEmptySpace, secondSeries, secondEmptySpace;
@@ -86,7 +90,11 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series 
 	secondEmptySpace = stringToNum(first, 2);
 	//for when series are equal
 	if (firstSeries == secondSeries)
-		return firstSeries + " " + (firstEmptySpace + secondEmptySpace);
+	{
+		stringstream text;
+		text << firstSeries << " " << firstEmptySpace + secondEmptySpace;
+		return text.str();
+	}
 	//for when series are not equal
 	if (firstEmptySpace > secondEmptySpace)
 	{
@@ -100,7 +108,9 @@ string selectBox(package pack[], box boxes[], int start, int finish, int series 
 		firstSeries = stringToNum(first, 1);
 		firstEmptySpace = stringToNum(first, 2);
 	}
-	return firstSeries + " " + (firstEmptySpace + secondEmptySpace);
+	stringstream text;
+	text << firstSeries << " " << firstEmptySpace + secondEmptySpace;
+	return text.str();
 }
 
 int stringToNum(string inputText ,int choice) 
