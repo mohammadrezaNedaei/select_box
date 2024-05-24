@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -18,31 +19,13 @@ struct package
 string selectBox(package[], box[], int, int, int = 0);
 void sort(package[]);
 int stringToNum(string, int);
+void readFile(package[], box[]);
 
 int main()
 {
 	package pack[10];
-	pack[0].requredSpace = 5;
-	pack[1].requredSpace = 3;
-	pack[2].requredSpace = 8;
-	pack[3].requredSpace = 10;
-	pack[4].requredSpace = 11;
-	pack[5].requredSpace = 12;
 	box boxes[10];
-	boxes[0].series = -1;
-	boxes[0].space = 3;
-	boxes[1].series = 1;
-	boxes[1].space = 12;
-	boxes[2].series = 2;
-	boxes[2].space = 11;
-	boxes[3].series = 2;
-	boxes[3].space = 9;
-	boxes[4].series = 3;
-	boxes[4].space = 10;
-	boxes[5].series = 3;
-	boxes[5].space = 5;
-	boxes[6].series = 3;
-	boxes[6].space = 14;
+	readFile(pack, boxes);
 	int a = stringToNum(selectBox(pack, boxes, 0, 5), 2);
 	cout << a << endl; 
 	int i = 0;
@@ -163,4 +146,39 @@ int stringToNum(string inputText ,int choice)
 	text >> temp;
 	number = stoi(temp);
 	return number;
+}
+
+void readFile(package pack[], box boxes[])
+{
+	ifstream in("in.txt");
+	if (!in)
+	{
+		cout << "file didn't opend"<<endl <<"please close";
+		system("pause");
+		return;
+	}
+	int temp, counter;
+	string temp2;
+	in >> counter;
+	for (int i = 0; i < counter; i++)
+	{
+		in >> temp;
+		pack[i].requredSpace = temp;
+	}
+	in >> counter;
+	boxes[0].series = -1;
+	boxes[0].space = counter;
+	getline(in, temp2);
+	int j = 1;
+	for (int i = 1; i <= counter; i++)
+	{
+		getline(in, temp2);
+		stringstream line(temp2);
+		while (line >> temp)
+		{
+			boxes[j].series = i;
+			boxes[j].space = temp;
+			j++;
+		}
+	}
 }
